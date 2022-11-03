@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useLoaderData } from 'react-router-dom';
+import { AuthContext } from '../../AuthProvider/AuthProvider';
 
 const Checkout = () => {
     const { title, price, _id } = useLoaderData();
-
+    const user = useContext(AuthContext);
     const handleOrder = event => {
         event.preventDefault();
         const form = event.target;
@@ -21,6 +22,21 @@ const Checkout = () => {
             phone,
             message
         }
+        fetch('http://localhoast:5000/orders', {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(order)
+        })
+            .then(res => res.json)
+            .then(data => {
+                if (data.acknowledged) {
+                    alert('Order placed Successfully')
+                    form.reset();
+                }
+            })
+            .catch(error => console.error(error));
     }
 
     return (
