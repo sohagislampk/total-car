@@ -4,7 +4,7 @@ import { AuthContext } from '../../AuthProvider/AuthProvider';
 
 const Checkout = () => {
     const { title, price, _id } = useLoaderData();
-    const user = useContext(AuthContext);
+    const { user } = useContext(AuthContext);
     const handleOrder = event => {
         event.preventDefault();
         const form = event.target;
@@ -29,7 +29,7 @@ const Checkout = () => {
             },
             body: JSON.stringify(order)
         })
-            .then(res => res.json)
+            .then(res => res.json())
             .then(data => {
                 if (data.acknowledged) {
                     alert('Order placed Successfully')
